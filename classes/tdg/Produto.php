@@ -4,6 +4,11 @@ class Produto
     /** @var object|null */
 	protected $data;
 
+    public static function setConnection(PDO $conn)
+    {
+        ProdutoGateway::setConnection($conn);
+    }
+
     /**
 	 * @param $name
 	 * @return null
@@ -46,31 +51,64 @@ class Produto
     public static function find($id)
     {
         $gw = new ProdutoGateway;
+        return $gw->find($id, __CLASS__);
 
     }  
-    
+        
+    /**
+     * all
+     *
+     * @param  mixed $filter
+     * @return void
+     */
     public static function all($filter = '')
     {
-        
+        $gw = new ProdutoGateway;
+        return $gw->all($filter, __CLASS__);        
     }
-
+    
+    /**
+     * delete
+     *
+     * @return void
+     */
     public function delete()
     {
-        
+        $gw = new ProdutoGateway;
+        return $gw->delete($this->id);
     }
-
+    
+    /**
+     * save
+     *
+     * @return void
+     */
     public function save()
     {
-        
+        $gw = new ProdutoGateway;
+        return $gw->save($this->data());        
     }
-
+    
+    /**
+     * getMargemLucro
+     *
+     * @return void
+     */
     public function getMargemLucro()
     {
-        
+       return (($this->preco_venda - $this->preco_custo) / $this->preco_custo) * 100;
     }
-
-    public function registrarCompra()
+    
+    /**
+     * registrarCompra
+     *
+     * @param  mixed $custo
+     * @param  mixed $qantidade
+     * @return void
+     */
+    public function registrarCompra($custo, $qantidade)
     {
-        
+        $this->preco_custo = $custo;
+        $this->estoque += $qantidade;
     }
 }
