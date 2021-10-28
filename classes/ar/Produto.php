@@ -1,4 +1,8 @@
 <?php
+/**
+ * class Produto [ActiveRecord]
+ * ActiveRecord
+ */
 class Produto
 {
     /** @var object|null */
@@ -6,7 +10,13 @@ class Produto
 
     /** @var \PDO */
     private static $conn;
-
+    
+    /**
+     * setConnection
+     *
+     * @param  mixed $conn
+     * @return void
+     */
     public static function setConnection(PDO $conn)
     {
         self::$conn = $conn;
