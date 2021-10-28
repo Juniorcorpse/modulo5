@@ -8,6 +8,10 @@ try {
 
     Produto::setConnection($conn);
 
+    foreach(Produto::all() as $produto){
+        $produto->delete();
+    }
+
     $produto = new Produto;
     $produto->descricao = 'Vinho';
     $produto->estoque = 8;
@@ -17,6 +21,23 @@ try {
     $produto->data_cadastro = date('Y-m-d');
     $produto->origem = 'N';
     $produto->save();
+
+    $outro = $produto::find(1);
+
+    var_dump(
+        $outro->descricao, 
+        $outro->estoque,
+        $outro->preco_custo,
+        $outro->preco_venda,
+        $outro->codigo_barras,
+        $outro->data_cadastro,   
+        $outro->getMargemLucro()    
+
+    ) ;
+
+
+    print  $outro->registrarCompra(14, 5);
+    $outro->save();
 
 } catch (Exception $e) {
     print $e->getMessage();
