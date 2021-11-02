@@ -3,14 +3,14 @@
  * class ProdutoTransaction [ActiveRecord]
  * ActiveRecord
  */
-class ProdutoTransaction
+class ProdutoTransactionELog
 {
     /** @var object|null */
 	protected $data;
 
     /**
 	 * @param $name
-	 * @return $this->data->$name
+	 * @return null
 	 */
 	public function __get($name)
 	{
@@ -50,10 +50,10 @@ class ProdutoTransaction
     public static function find($id)
     {
         $sql = "SELECT * FROM produto WHERE id= '$id' ";
-        print "$sql <br/>";
 
         $conn = Transaction::get();
         $result = $conn->query($sql);
+        Transaction::log($sql);
         return $result->fetchObject(__CLASS__);
     }  
         
@@ -70,10 +70,10 @@ class ProdutoTransaction
         if($filter){
             $sql .= "WHERE $filter ";
         }
-        print "$sql <br/>";
 
         $conn = Transaction::get();
         $result = $conn->query($sql);
+        Transaction::log($sql);
         return $result->fetchAll(PDO::FETCH_CLASS, __CLASS__);
     }
     
@@ -85,10 +85,11 @@ class ProdutoTransaction
     public function delete()
     {
         $sql = "DELETE FROM produto WHERE id= '{$this->id}' ";
-        print "$sql <br/>";
 
-        $conn = Transaction::get();        
-        return $conn->query($sql);
+        $conn = Transaction::get();
+        $result = $conn->query($sql);
+        Transaction::log($sql);
+        return $result;
     }
     
     /**
@@ -121,9 +122,11 @@ class ProdutoTransaction
                                 "       origem        = '{$this->origem}' ".
                                 "WHERE  id            = '{$this->id}'";
         }
-        print "$sql <br>";
+        
         $conn = Transaction::get();
-        return $conn->exec($sql);
+        $result = $conn->exec($sql);
+        Transaction::log($sql);
+        return $result;
     }
     
     /**

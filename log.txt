@@ -1,0 +1,1 @@
+2021-11-02 21:35:19: INSERT INTO produto (id, descricao, estoque, preco_custo,       preco_venda, codigo_barras, data_cadastro, origem) VALUES ('7', 'Café ProdutoTransactionELog', '89', '10', '17', '10101010', '2021-11-02', 'N')
