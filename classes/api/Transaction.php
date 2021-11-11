@@ -25,7 +25,7 @@ class Transaction
     /**
      * close
      *
-     * @return void
+     * 
      */
     public static function close()
     {

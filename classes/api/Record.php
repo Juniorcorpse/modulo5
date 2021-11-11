@@ -48,7 +48,7 @@ abstract class Record
 	 */
 	public function __get($name)
 	{
-		return (isset($this->data[$name]) ?? null);
+		return $this->data[$name] ?? null;
 	}
 
     public function __clone()
@@ -63,7 +63,7 @@ abstract class Record
 
     public function toArray()
     {
-        return $this->date;
+        return $this->data;
     }
 
 	/**
@@ -93,34 +93,41 @@ abstract class Record
         }
     }
 
+    public static function find(int $id)
+    {
+       $className = get_called_class();
+       $ar = new $className();
+       return $ar->load($id);
+    }
+    
+    /**
+     * store
+     *
+     * 
+     */
     public function store()
     {
-        if (empty($this->date['id']) OR (!$this->load($this->date['id']))) {
+        if (empty($this->data['id']) OR (!$this->load($this->data['id']))) {
             $prepared = $this->prepare($this->data);
 
             if (empty($this->date['id'])) {
-                $$prepared['id'] = $this->getLastId()+1;
+                $this->data['id'] = $this->getLastId() + 1;
+                $prepared['id'] = $this->data['id'];
             }
 
             $query = "INSERT INTO {$this->entity} ".
             '('.implode(',', array_keys($prepared)).')'.
             'values'.
             '('.implode(',', array_values($prepared)).')';
+            if($conn = Transaction::get()){
+                Transaction::log($query);
+                $result = $conn->query($query);
+            }else{
+                throw new Exception("Error Processing Request, Não há transação ativa!");
+                
+            }
         }else {
-            $this->update();
-        }
-        if($conn = Transaction::get()){
-            Transaction::log($query);
-            $result = $conn->exec($query);
-        }else{
-            throw new Exception("Error Processing Request, Não há transação ativa!");
-            
-        }
-    }
-
-    public function update()
-    {
-        $prepared = $this->prepare($this->data);
+            $prepared = $this->prepare($this->data);
         $set = [];
         foreach($prepared as $columns => $value){
             $set[] = "$columns = $value";
@@ -128,8 +135,17 @@ abstract class Record
         $query = "UPDATE {$this->entity}";
         $query.= " SET ".implode(', ', $set);
         $query.= "WHERE id=". (int) $this->data['id'];
+        }
+        if($conn = Transaction::get()){
+            Transaction::log($query);
+            $result = $conn->query($query);
+        }else{
+            throw new Exception("Error Processing Request, Não há transação ativa!");
+            
+        }
     }
 
+   
     public function delete($id = null)
     {
         $id = $id ? $id : (int) $this->data['id'];
@@ -146,11 +162,11 @@ abstract class Record
     public function getLastId()
     {
         if($conn = Transaction::get()){
-            $query = "SELECT max(id) FROM {$this->entity} ";
+            $query = "SELECT max(id) as max FROM {$this->entity} ";
             Transaction::log($query);
             $result = $conn->query($query);
             $row = $result->fetch();
-            return $row[0];
+            return $row->max;
 
         }else{
             throw new Exception("Error Processing Request, Não há transação ativa!");
