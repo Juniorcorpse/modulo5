@@ -11,7 +11,14 @@ require_once 'classes/model/Produto.php';
 
 try {
     Transaction::open('estoque');
-    Transaction::setLogger(new LoggerTXT('log.txt'));
+    Transaction::setLogger(new LoggerTXT('log_delete.txt'));
+
+    $criteria = new Criteria();
+    $criteria->add('descricao', 'like', '%WEBC%');
+    $criteria->add('descricao', 'like', '%FILMAD%', 'OR');
+
+    $repository = new Repository('Produto');
+    $repository->delete($criteria);
 
     Transaction::close();
 } catch (\PDOException $pdoex) {    

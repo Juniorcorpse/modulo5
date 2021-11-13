@@ -11,8 +11,20 @@ require_once 'classes/model/Produto.php';
 
 try {
     Transaction::open('estoque');
-    Transaction::setLogger(new LoggerTXT('log.txt'));
+    Transaction::setLogger(new LoggerTXT('log_update.txt'));
 
+    $criteria = new Criteria();
+    $criteria->add('preco_venda', '<=', 35);
+    $criteria->add('origem',      '=', 'N');
+
+    $repository = new Repository('Produto');
+    $produtos = $repository->load($criteria);
+    if ($produtos) {
+        foreach ($produtos as $produto) {
+            $produto->preco_venda *= 1.3;
+            $produto->store();
+        }
+    }
     Transaction::close();
 } catch (\PDOException $pdoex) {    
     print $pdoex->getMessage();

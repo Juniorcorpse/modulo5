@@ -1,1 +1,1 @@
-2021-11-12 22:13:29: SELECT * FROM produto WHERE (estoque > 10 AND origem = 'N')2021-11-12 22:13:29: SELECT count(*) as count FROM produto WHERE (estoque > 10 AND origem = 'N')
+2021-11-13 14:31:51: SELECT * FROM produto WHERE (estoque > 10 AND origem = 'N')<br/> \n 2021-11-13 14:31:51: SELECT count(*) as count FROM produto WHERE (estoque > 10 AND origem = 'N')<br/>\n

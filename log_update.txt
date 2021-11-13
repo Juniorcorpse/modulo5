@@ -1,0 +1,3 @@
+2021-11-13 14:48:00: SELECT * FROM produto WHERE (preco_venda <= 35 AND origem = 'N')<br/>
+2021-11-13 14:48:00: SELECT * FROM produto WHERE id=23<br/>
+2021-11-13 14:48:00: UPDATE produto SET id = '23', descricao = 'MOUSE PS2 A7 AZUL/PLATA', estoque = '20', preco_custo = '5', preco_venda = 25.35, codigo_barras = '0000000022', data_cadastro = '2015-01-01', origem = 'N'WHERE id=23<br/>
