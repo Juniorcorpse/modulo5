@@ -10,7 +10,7 @@ class LoggerTXT extends Logger
     {
         $text = date('Y-m-d H:i:s').': '.$message;
         $handler = fopen($this->filename, 'a');
-        fwrite($handler, $text);
+        fwrite($handler, $text. '<br/>\n');
         fclose($handler);
     }
 }

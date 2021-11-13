@@ -1,1 +1,1 @@
-2021-11-10 22:09:53: SELECT * FROM produto WHERE id=12021-11-10 22:09:53: DELETE FROM produto WHERE id=1
+2021-11-12 22:13:29: SELECT * FROM produto WHERE (estoque > 10 AND origem = 'N')2021-11-12 22:13:29: SELECT count(*) as count FROM produto WHERE (estoque > 10 AND origem = 'N')

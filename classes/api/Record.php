@@ -70,13 +70,13 @@ abstract class Record
      * testar!!!!!!
 	 * @return null|object
 	 */
-	public function data(): ?object
-	{
-        if (empty($this->data)) {
-			$this->data = new \stdClass();
-		}
-		return (object) $this->data;
-	}
+	// public function data(): ?object
+	// {
+    //     if (empty($this->data)) {
+	// 		$this->data = new \stdClass();
+	// 	}
+	// 	return (object) $this->data;
+	// }
 
     public function load(int $id, string $columns = '*')
     {
